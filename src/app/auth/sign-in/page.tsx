@@ -2,27 +2,25 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const SignInPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
-    defaultValues: { name: "", email: "", password: "" },
+    defaultValues: { email: "", password: "" },
   });
   const onSubmit: SubmitHandler<FieldValues> = async (body) => {
     setIsLoading(true);
     try {
-      const { data } = await axios.post("/api/register", body);
+      const data = signIn("credentials", body);
       console.log(data);
-      router.push("/auth/login");
     } catch (error) {
       console.log(error);
     } finally {
@@ -45,14 +43,6 @@ const SignInPage = () => {
           required
         />
         <Input
-          id="name"
-          label="Name"
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-        />
-        <Input
           id="password"
           label="Password"
           type="password"
@@ -61,12 +51,12 @@ const SignInPage = () => {
           errors={errors}
           required
         />
-        <Button label="Register" />
+        <Button label="Sign In" />
         <div className="text-center">
           <p className="text-gray-400">
-            Already a member?{" "}
-            <Link href="/auth/login" className="text-black hover:underline">
-              Login
+            Not a member?{" "}
+            <Link href="/auth/sign-up" className="text-black hover:underline">
+              Sign Up
             </Link>
           </p>
         </div>

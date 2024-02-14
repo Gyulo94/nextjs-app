@@ -22,7 +22,7 @@ const SignUpPage = () => {
     try {
       const { data } = await axios.post("/api/sign-up", body);
       console.log(data);
-      router.push("/auth/login");
+      router.push("/auth/sign-in");
     } catch (error) {
       console.log(error);
     } finally {
@@ -61,7 +61,7 @@ const SignUpPage = () => {
           errors={errors}
           required
         />
-        <Button label="Register" />
+        <Button label="Sign Up" />
         <div className="text-center">
           <p className="text-gray-400">
             Already a member?{" "}
